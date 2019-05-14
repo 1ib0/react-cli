@@ -1,38 +1,21 @@
-const path = require('path');
-const webpack = require('webpack');
+const paths = require('./paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    // context: path.resolve(__dirname), // 执行上下文
-    mode: "development",
-    // mode: "production",
-    entry: path.resolve(__dirname, '../src/index.jsx'), // 入口文件
+    entry: paths.appIndexJs,
     output: {
-        path: path.resolve(__dirname, "../dist"), //打包后的文件存放的地方
-        // publicPath: 'https://cdn:chafferer/assets/',
-        filename: "bundle.js", // 打包后输出文件的文件名
-    },
-    // devtool: 'inline-source-map',
-    devServer: {
-        contentBase: path.join(__dirname, '../dist'),
-        compress: false,
-        port: 9000,
-        historyApiFallback: true, // 默认禁用，true: 当404的时候跳转至index.html
-        open: true,  // 自动开启服务器
-        hot: true, // 热更新
-        // publicPath: '/dist/', // 保证两端的/存在 访问的路径变为http://host:port/dist/[index.html]
+        path: paths.appDist, //打包后的文件存放的地方
+        filename: "index.js" // 打包后输出文件的文件名
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'webpack app',
             filename: 'index.html',
-            template: path.resolve(__dirname, '../src/index.html'),
-            favicon: path.resolve(__dirname, '../src/favicon.png'),
+            template: paths.appHtml,
+            favicon: paths.appFavicon
         }),
-        new webpack.BannerPlugin('banner'),
-        new webpack.HotModuleReplacementPlugin(),
     ],
     module: {
         rules: [
@@ -42,7 +25,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                include: path.resolve(__dirname, '../node_modules'),
+                include: paths.appNodeModules,
                 use: [
                     'style-loader',
                     {
@@ -57,7 +40,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                exclude: path.resolve(__dirname, '../node_modules'),
+                exclude: paths.appNodeModules,
                 use: [
                     'style-loader',
                     {
@@ -73,7 +56,7 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                include: path.resolve(__dirname, '../node_modules'),
+                include: paths.appNodeModules,
                 use: [
                     {
                         loader: 'style-loader',
@@ -90,7 +73,7 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                exclude: path.resolve(__dirname, '../node_modules'),
+                exclude: paths.appNodeModules,
                 use: [
                     {
                         loader: 'style-loader',
@@ -115,20 +98,10 @@ module.exports = {
                         options: {
                             limit: 8192,
                             name: 'images/[name].[ext]',
-                            // publicPath: '/imagesaaaaaabbbbbbcccc/',
                         }
                     }
                 ]
             }
         ],
     },
-    // resolve: {
-    //     extensions: ['.webpack.js', '.web.js', '.js']
-    // },
-    // node: {
-    //     console: true,
-    //     fs: 'empty',
-    //     net: 'empty',
-    //     tls: 'empty'
-    // }
 }
