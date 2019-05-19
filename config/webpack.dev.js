@@ -5,7 +5,7 @@ const common = require('./webpack.common');
 
 module.exports = merge(common, {
     mode: "development",
-    devtool: 'inline-source-map',
+    devtool: 'cheap-module-eval-source-map', // 选择一中source map格式来增强调试过程
     devServer: {
         contentBase: paths.appDist,
         compress: true,

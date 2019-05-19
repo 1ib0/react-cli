@@ -10,11 +10,20 @@ module.exports = {
     output: {
         path: paths.appDist, //打包后的文件存放的地方
         filename: isEnvDev ? 'js/[name].[hash].js' : 'js/[name].[contenthash].js', // 打包后输出文件的文件名称 contenthash:根据内容生成的hash
-        // chunkFilename: '[name].[hash].js', // 决定了非入口chunk的名称
+        chunkFilename: isEnvDev ? 'js/[name].[hash].js' : 'js/[name].[contenthash].js' // 决定了非入口chunk的名称
+    },
+    target: 'web', // 部署目标 默认值为web
+    resolve: {
+        extensions: ['.mjs', '.js', '.jsx', '.json'], // 自动解析扩展，引入模块的时候可以不带扩展
+        alias: {
+            Src: paths.appSrc,
+            Assets: paths.appAssets
+        }
     },
     optimization: { // 优化
-        runtimeChunk: 'single',
+        runtimeChunk: 'single', // 在浏览器运行过程中，webpack 用来连接模块化应用程序所需的所有代码
         splitChunks: {
+            chunks: 'all',
             cacheGroups: {  // 处理第三方的应用，进行缓存处理，因为几乎不涉及改动
                 vendor: {
                     test: paths.appNodeModules,
@@ -34,8 +43,8 @@ module.exports = {
             minify: !isEnvDev
         }),
         new MiniCssExtractPlugin({
-            filename: isEnvDev ? 'css/[name].css' : 'css/[name].[hash].css',
-            chunkFilename: isEnvDev ? 'css/[id].css' : 'css/[id].[hash].css',
+            filename: 'css/[name].[hash].css',
+            chunkFilename: 'css/[id].[hash].css',
         }),
     ],
     module: {

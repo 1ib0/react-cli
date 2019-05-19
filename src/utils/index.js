@@ -5,7 +5,8 @@
  */
 
 export const square = (x) => {
-    return x * x;
+    // return x * x;
+    console.log('y --->', y);
 }
 
 export const cube = (x) => {
